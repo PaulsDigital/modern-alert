@@ -5,16 +5,16 @@
   "license": "MIT",
   "author": {
     "name": "Paul's Digital Studio",
-    "url": "https://github.com/PaulDigital"
+    "url": "https://github.com/PaulsDigital"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PaulDigital/modern-alert.git"
+    "url": "git+https://github.com/PaulsDigital/modern-alert.git"
   },
   "bugs": {
-    "url": "https://github.com/PaulDigital/modern-alert/issues"
+    "url": "https://github.com/PaulsDigital/modern-alert/issues"
   },
-  "homepage": "https://github.com/PaulDigital/modern-alert#readme",
+  "homepage": "https://github.com/PaulsDigital/modern-alert#readme",
   "keywords": [
     "alert",
     "dialog",
