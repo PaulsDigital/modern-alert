@@ -53,9 +53,9 @@ import 'modern-alert/modern-alert.css'
 After the package is on npm:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@0.1.0/src/modern-alert.css">
-<script src="https://cdn.jsdelivr.net/npm/modern-alert@0.1.0/src/icons.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/modern-alert@0.1.0/src/modern-alert.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@1.0.0/src/modern-alert.css">
+<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.0.0/src/icons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.0.0/src/modern-alert.js"></script>
 ```
 
 Pin a version. `@latest` will follow new releases.
