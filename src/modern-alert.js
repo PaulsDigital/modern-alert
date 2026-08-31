@@ -27,7 +27,7 @@
     backdrop: true
   };
 
-  const ICON_TYPES = { success: 1, error: 1, warning: 1, info: 1, question: 1 };
+  const ICON_TYPES = { success: 1, error: 1, warning: 1, info: 1, question: 1, confirm: 1 };
   const INPUT_TYPES = { text: 1, email: 1, password: 1, textarea: 1, select: 1 };
 
   let state = emptyState();
@@ -151,7 +151,6 @@
   }
 
   function visualType(options) {
-    if (options.type === 'confirm') return 'question';
     return options.type || 'info';
   }
 

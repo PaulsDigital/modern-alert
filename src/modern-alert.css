@@ -73,11 +73,16 @@
   --ma-focus: rgba(108, 182, 255, 0.4);
 }
 
-.ma-overlay[data-ma-type="question"],
-.ma-overlay[data-ma-type="confirm"] {
+.ma-overlay[data-ma-type="question"] {
   --ma-accent: #b9a0ff;
   --ma-accent-soft: rgba(185, 160, 255, 0.16);
   --ma-focus: rgba(185, 160, 255, 0.4);
+}
+
+.ma-overlay[data-ma-type="confirm"] {
+  --ma-accent: #3ecad8;
+  --ma-accent-soft: rgba(62, 202, 216, 0.16);
+  --ma-focus: rgba(62, 202, 216, 0.4);
 }
 
 .ma-overlay--out {

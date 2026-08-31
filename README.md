@@ -53,9 +53,9 @@ import 'modern-alert/modern-alert.css'
 After the package is on npm:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@1.0.0/src/modern-alert.css">
-<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.0.0/src/icons.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.0.0/src/modern-alert.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@1.0.1/src/modern-alert.css">
+<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.0.1/src/icons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.0.1/src/modern-alert.js"></script>
 ```
 
 Pin a version. `@latest` will follow new releases.
@@ -90,7 +90,7 @@ const { isConfirmed } = await ModernAlert.confirm(
 )
 ```
 
-`confirm` shows Cancel and a primary action. Other types show a single button unless you pass `cancelText`.
+`confirm` shows Cancel and a primary action. Other types show a single button unless you pass `cancelText`. With `icon: true`, `confirm` uses cyan swap arrows; `question` keeps the purple question mark.
 
 ### Ask for a value
 

@@ -36,6 +36,13 @@
       '<circle class="ma-stroke ma-stroke--ring" cx="32" cy="32" r="26" ' + stroke + '></circle>' +
       '<path class="ma-stroke ma-stroke--mark" d="M26 25.5c1.2-3.6 6.8-5 10.2-2.4 3 2.3 2.6 6.2-.2 8.2-1.8 1.3-4 2.2-4 5.2" ' + stroke + '></path>' +
       '<circle class="ma-stroke ma-stroke--dot" cx="32" cy="44.5" r="1.6" fill="currentColor" stroke="none"></circle>' +
+      '</svg>',
+
+    confirm:
+      '<svg class="ma-svg" viewBox="0 0 64 64" aria-hidden="true">' +
+      '<circle class="ma-stroke ma-stroke--ring" cx="32" cy="32" r="26" ' + stroke + '></circle>' +
+      '<path class="ma-stroke ma-stroke--mark" d="M19 25h22.5l-6-5.8M41.5 25l-6 5.8" ' + stroke + '></path>' +
+      '<path class="ma-stroke ma-stroke--mark" d="M45 39H22.5l6-5.8M22.5 39l6 5.8" ' + stroke + '></path>' +
       '</svg>'
   };
 })(typeof window !== 'undefined' ? window : this);
