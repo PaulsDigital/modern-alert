@@ -2,7 +2,7 @@
 
 A small dialog library for the browser. No npm dependencies, no framework.
 
-Drop in three files. Call `ModernAlert.show()`. Get a promise back.
+Drop in two files. Call `ModernAlert.show()`. Get a promise back.
 
 ```js
 const result = await ModernAlert.confirm(
@@ -22,11 +22,11 @@ The default card is left-aligned, with the type color as a thin top line. Light,
 - Dialog first, decoration second (`icon` is off by default)
 - Semantic types: `success`, `error`, `warning`, `info`, `question`, `confirm`, `loading`
 - Backdrop you can keep, drop, or keep invisible while still blocking the page
-- Inputs, HTML, loading, and a timer — still three files, no bundler
+- Inputs, HTML, loading, and a timer — CSS plus one script, no bundler
 
 ## Setup
 
-Load the three files in this order. `window.ModernAlert` is ready after the last script.
+Icons ship inside the script. `window.ModernAlert` is set for CDN tags; bundlers should import the default export.
 
 ### npm
 
@@ -34,28 +34,27 @@ Load the three files in this order. `window.ModernAlert` is ready after the last
 npm install modern-alert
 ```
 
-```html
-<link rel="stylesheet" href="node_modules/modern-alert/src/modern-alert.css">
-<script src="node_modules/modern-alert/src/icons.js"></script>
-<script src="node_modules/modern-alert/src/modern-alert.js"></script>
+```js
+import ModernAlert from 'modern-alert'
+import 'modern-alert/modern-alert.css'
+
+await ModernAlert.success('Saved', 'The file is already in the library.')
 ```
 
-If your bundler can import CSS:
+Named import works too: `import { ModernAlert } from 'modern-alert'`.
 
-```js
-import 'modern-alert/src/icons.js'
-import 'modern-alert'
-import 'modern-alert/modern-alert.css'
+Without a bundler, load CSS then the IIFE file:
+
+```html
+<link rel="stylesheet" href="node_modules/modern-alert/src/modern-alert.css">
+<script src="node_modules/modern-alert/src/modern-alert.js"></script>
 ```
 
 ### CDN
 
-After the package is on npm:
-
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@1.0.1/src/modern-alert.css">
-<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.0.1/src/icons.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.0.1/src/modern-alert.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@1.1.0/src/modern-alert.css">
+<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.1.0/src/modern-alert.js"></script>
 ```
 
 Pin a version. `@latest` will follow new releases.
@@ -64,11 +63,10 @@ TypeScript types ship in the package (`src/modern-alert.d.ts`).
 
 ### Copy the files
 
-Copy `src/modern-alert.css`, `src/icons.js`, and `src/modern-alert.js` into your project:
+Copy `src/modern-alert.css` and `src/modern-alert.js` into your project:
 
 ```html
 <link rel="stylesheet" href="src/modern-alert.css">
-<script src="src/icons.js"></script>
 <script src="src/modern-alert.js"></script>
 ```
 
@@ -108,7 +106,16 @@ if (result.isConfirmed) {
 }
 ```
 
-`input` can be `text`, `email`, `password`, `textarea`, or `select` (`inputOptions` + `inputValue` for select).
+`input` can be `text`, `email`, `password`, `number`, `tel`, `url`, `search`, `date`, `time`, `month`, `week`, `datetime-local`, `textarea`, or `select` (`inputOptions` + `inputValue` for select). Pass `inputAttributes` for native field attrs such as `min`, `max`, `step`, and `autocomplete`.
+
+```js
+const result = await ModernAlert.show({
+  type: 'question',
+  title: 'How many seats?',
+  input: 'number',
+  inputAttributes: { min: 1, max: 12, step: 1 }
+})
+```
 
 ### Loading, then done
 
@@ -163,12 +170,13 @@ ModernAlert.success('Saved', 'All set.', { theme: 'dark', timer: 2000 })
 | `cancelText` | `''` | Secondary button label. Any non-empty value also shows Cancel |
 | `showConfirm` | `true` | Show the primary button |
 | `showCancel` | `false` | Show Cancel. `type: 'confirm'` turns this on |
-| `input` | `''` | `text` `email` `password` `textarea` `select` |
+| `input` | `''` | `text` `email` `password` `number` `tel` `url` `search` `date` `time` `month` `week` `datetime-local` `textarea` `select` |
 | `inputPlaceholder` | `''` | Placeholder for text-like inputs |
 | `inputValue` | `''` | Initial value, or the selected key for `select` |
 | `inputLabel` | `''` | Label above the field |
 | `inputOptions` | `null` | `{ value: 'Label' }` map for `select` |
 | `inputValidator` | `null` | `(value) => errorMessage`. Return a string to block confirm |
+| `inputAttributes` | `null` | Native field attrs: `min` `max` `step` `autocomplete`, or `type: 'date'` |
 | `theme` | `'auto'` | Follows `prefers-color-scheme`, or `'light'` / `'dark'` |
 | `icon` | `false` | `true` shows the animated 72px type icon. Forced on for `loading` |
 | `backdrop` | `true` | `false` removes the dim and blur, not the click shield |

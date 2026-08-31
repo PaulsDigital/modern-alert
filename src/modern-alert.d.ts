@@ -9,7 +9,21 @@ export type DialogType =
 
 export type Theme = 'auto' | 'light' | 'dark'
 
-export type InputType = 'text' | 'email' | 'password' | 'textarea' | 'select'
+export type InputType =
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'number'
+  | 'tel'
+  | 'url'
+  | 'search'
+  | 'date'
+  | 'time'
+  | 'month'
+  | 'week'
+  | 'datetime-local'
+  | 'textarea'
+  | 'select'
 
 export type DismissReason =
   | 'cancel'
@@ -18,6 +32,32 @@ export type DismissReason =
   | 'timer'
   | 'close'
   | 'replace'
+
+export interface InputAttributes {
+  min?: string | number
+  max?: string | number
+  step?: string | number
+  autocomplete?: string
+  autocapitalize?: string
+  autocorrect?: string
+  disabled?: boolean
+  enterkeyhint?: string
+  inputmode?: string
+  list?: string
+  maxlength?: string | number
+  minlength?: string | number
+  name?: string
+  pattern?: string
+  placeholder?: string
+  readonly?: boolean
+  required?: boolean
+  size?: string | number
+  spellcheck?: boolean | 'true' | 'false'
+  tabindex?: string | number
+  title?: string
+  type?: Exclude<InputType, 'textarea' | 'select'>
+  [name: string]: string | number | boolean | undefined
+}
 
 export interface Options {
   type?: DialogType
@@ -37,6 +77,7 @@ export interface Options {
   inputLabel?: string
   inputOptions?: Record<string, string> | null
   inputValidator?: ((value: string) => string | false | void | null) | null
+  inputAttributes?: InputAttributes | null
   theme?: Theme
   icon?: boolean
   backdrop?: boolean
@@ -72,6 +113,7 @@ export interface ModernAlertAPI {
 declare const ModernAlert: ModernAlertAPI
 
 export as namespace ModernAlert
+export { ModernAlert }
 export default ModernAlert
 
 declare global {

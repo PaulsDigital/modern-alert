@@ -1,6 +1,6 @@
 {
   "name": "modern-alert",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Modern modal dialogs for the browser. No dependencies.",
   "license": "MIT",
   "author": {
@@ -25,6 +25,7 @@
     "vanilla-js"
   ],
   "main": "src/modern-alert.js",
+  "module": "src/modern-alert.mjs",
   "browser": "src/modern-alert.js",
   "style": "src/modern-alert.css",
   "types": "src/modern-alert.d.ts",
@@ -37,16 +38,20 @@
   "exports": {
     ".": {
       "types": "./src/modern-alert.d.ts",
+      "import": "./src/modern-alert.mjs",
+      "require": "./src/modern-alert.js",
       "default": "./src/modern-alert.js"
     },
     "./modern-alert.css": "./src/modern-alert.css",
     "./src/modern-alert.css": "./src/modern-alert.css",
     "./src/modern-alert.js": "./src/modern-alert.js",
+    "./src/modern-alert.mjs": "./src/modern-alert.mjs",
     "./src/icons.js": "./src/icons.js",
     "./package.json": "./package.json"
   },
   "sideEffects": [
     "./src/modern-alert.js",
+    "./src/modern-alert.mjs",
     "./src/icons.js",
     "*.css"
   ]

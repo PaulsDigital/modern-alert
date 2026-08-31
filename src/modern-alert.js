@@ -1,7 +1,47 @@
 (function (global) {
   'use strict';
 
-  const ICONS = global.ModernAlertIcons || {};
+  const stroke =
+    'fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"';
+
+  const BUILTIN_ICONS = {
+    success:
+      '<svg class="ma-svg" viewBox="0 0 64 64" aria-hidden="true">' +
+      '<circle class="ma-stroke ma-stroke--ring" cx="32" cy="32" r="26" ' + stroke + '></circle>' +
+      '<path class="ma-stroke ma-stroke--mark" d="M20.5 33.2l8.2 8.3 15.6-18" ' + stroke + '></path>' +
+      '</svg>',
+    error:
+      '<svg class="ma-svg" viewBox="0 0 64 64" aria-hidden="true">' +
+      '<circle class="ma-stroke ma-stroke--ring" cx="32" cy="32" r="26" ' + stroke + '></circle>' +
+      '<path class="ma-stroke ma-stroke--mark" d="M24 24l16 16M40 24L24 40" ' + stroke + '></path>' +
+      '</svg>',
+    warning:
+      '<svg class="ma-svg" viewBox="0 0 64 64" aria-hidden="true">' +
+      '<path class="ma-stroke ma-stroke--ring" d="M32 12.5L54 51.5H10z" ' + stroke + '></path>' +
+      '<path class="ma-stroke ma-stroke--mark" d="M32 26v12" ' + stroke + '></path>' +
+      '<circle class="ma-stroke ma-stroke--dot" cx="32" cy="46" r="1.4" fill="currentColor" stroke="none"></circle>' +
+      '</svg>',
+    info:
+      '<svg class="ma-svg" viewBox="0 0 64 64" aria-hidden="true">' +
+      '<circle class="ma-stroke ma-stroke--ring" cx="32" cy="32" r="26" ' + stroke + '></circle>' +
+      '<path class="ma-stroke ma-stroke--mark" d="M32 29.5V42" ' + stroke + '></path>' +
+      '<circle class="ma-stroke ma-stroke--dot" cx="32" cy="23" r="1.6" fill="currentColor" stroke="none"></circle>' +
+      '</svg>',
+    question:
+      '<svg class="ma-svg" viewBox="0 0 64 64" aria-hidden="true">' +
+      '<circle class="ma-stroke ma-stroke--ring" cx="32" cy="32" r="26" ' + stroke + '></circle>' +
+      '<path class="ma-stroke ma-stroke--mark" d="M26 25.5c1.2-3.6 6.8-5 10.2-2.4 3 2.3 2.6 6.2-.2 8.2-1.8 1.3-4 2.2-4 5.2" ' + stroke + '></path>' +
+      '<circle class="ma-stroke ma-stroke--dot" cx="32" cy="44.5" r="1.6" fill="currentColor" stroke="none"></circle>' +
+      '</svg>',
+    confirm:
+      '<svg class="ma-svg" viewBox="0 0 64 64" aria-hidden="true">' +
+      '<circle class="ma-stroke ma-stroke--ring" cx="32" cy="32" r="26" ' + stroke + '></circle>' +
+      '<path class="ma-stroke ma-stroke--mark" d="M19 25h22.5l-6-5.8M41.5 25l-6 5.8" ' + stroke + '></path>' +
+      '<path class="ma-stroke ma-stroke--mark" d="M45 39H22.5l6-5.8M22.5 39l6 5.8" ' + stroke + '></path>' +
+      '</svg>'
+  };
+
+  const ICONS = Object.assign({}, BUILTIN_ICONS, global.ModernAlertIcons || {});
   const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
   const defaults = {
@@ -22,13 +62,68 @@
     inputLabel: '',
     inputOptions: null,
     inputValidator: null,
+    inputAttributes: null,
     theme: 'auto',
     icon: false,
     backdrop: true
   };
 
   const ICON_TYPES = { success: 1, error: 1, warning: 1, info: 1, question: 1, confirm: 1 };
-  const INPUT_TYPES = { text: 1, email: 1, password: 1, textarea: 1, select: 1 };
+  const INPUT_TYPES = {
+    text: 1,
+    email: 1,
+    password: 1,
+    number: 1,
+    tel: 1,
+    url: 1,
+    search: 1,
+    date: 1,
+    time: 1,
+    month: 1,
+    week: 1,
+    'datetime-local': 1,
+    textarea: 1,
+    select: 1
+  };
+  const INPUT_ATTR_ALLOW = {
+    autocomplete: 1,
+    autocapitalize: 1,
+    autocorrect: 1,
+    dirname: 1,
+    disabled: 1,
+    enterkeyhint: 1,
+    inputmode: 1,
+    list: 1,
+    max: 1,
+    maxlength: 1,
+    min: 1,
+    minlength: 1,
+    name: 1,
+    pattern: 1,
+    placeholder: 1,
+    readonly: 1,
+    required: 1,
+    size: 1,
+    spellcheck: 1,
+    step: 1,
+    tabindex: 1,
+    title: 1,
+    type: 1
+  };
+  const NATIVE_FIELD_TYPES = {
+    text: 1,
+    email: 1,
+    password: 1,
+    number: 1,
+    tel: 1,
+    url: 1,
+    search: 1,
+    date: 1,
+    time: 1,
+    month: 1,
+    week: 1,
+    'datetime-local': 1
+  };
 
   let state = emptyState();
 
@@ -262,7 +357,32 @@
       if (options.inputPlaceholder) field.placeholder = options.inputPlaceholder;
     }
     wrap.appendChild(field);
+    applyInputAttributes(field, options.inputAttributes);
     return wrap;
+  }
+
+  function applyInputAttributes(field, attrs) {
+    if (!attrs || typeof attrs !== 'object') return;
+    Object.keys(attrs).forEach(function (key) {
+      const name = String(key).toLowerCase();
+      if (!INPUT_ATTR_ALLOW[name] || name.indexOf('on') === 0) return;
+      const value = attrs[key];
+      if (name === 'type') {
+        if (field.tagName === 'INPUT' && NATIVE_FIELD_TYPES[String(value)]) {
+          field.type = String(value);
+        }
+        return;
+      }
+      if (value == null || value === false) {
+        field.removeAttribute(name);
+        return;
+      }
+      if (value === true) {
+        field.setAttribute(name, '');
+        return;
+      }
+      field.setAttribute(name, String(value));
+    });
   }
 
   function buildActions(options) {
@@ -583,7 +703,7 @@
     return show(options);
   }
 
-  global.ModernAlert = {
+  const api = {
     show: show,
     close: close,
     isVisible: function () {
@@ -597,4 +717,7 @@
     question: helper('question'),
     confirm: confirmDialog
   };
-})(typeof window !== 'undefined' ? window : this);
+
+  global.ModernAlert = api;
+  if (typeof module === 'object' && module.exports) module.exports = api;
+})(typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this));
