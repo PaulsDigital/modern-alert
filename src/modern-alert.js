@@ -64,11 +64,14 @@
     inputValidator: null,
     inputAttributes: null,
     theme: 'auto',
+    style: 'default',
     icon: false,
     backdrop: true
   };
 
+  const STYLE_TYPES = { default: 1, bootstrap: 1 };
   const ICON_TYPES = { success: 1, error: 1, warning: 1, info: 1, question: 1, confirm: 1 };
+  let preferredStyle = 'default';
   const INPUT_TYPES = {
     text: 1,
     email: 1,
@@ -190,6 +193,9 @@
       options.timer = Number(options.timer) || 0;
     }
 
+    if (raw.style == null) options.style = preferredStyle;
+    if (!STYLE_TYPES[options.style]) options.style = 'default';
+
     return options;
   }
 
@@ -224,6 +230,7 @@
     overlay.className = 'ma-overlay';
     overlay.dataset.maType = visualType(options);
     overlay.dataset.maTheme = resolveTheme(options.theme);
+    overlay.dataset.maStyle = options.style === 'bootstrap' ? 'bootstrap' : 'default';
     overlay.classList.toggle('ma-overlay--clear', !options.backdrop);
     if (options.type === 'loading') overlay.setAttribute('aria-busy', 'true');
     else overlay.removeAttribute('aria-busy');
@@ -703,9 +710,16 @@
     return show(options);
   }
 
+  function setStyle(name) {
+    if (name == null) return preferredStyle;
+    preferredStyle = STYLE_TYPES[name] ? name : 'default';
+    return preferredStyle;
+  }
+
   const api = {
     show: show,
     close: close,
+    style: setStyle,
     isVisible: function () {
       return Boolean(state.overlay) && !state.closing;
     },

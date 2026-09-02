@@ -53,8 +53,8 @@ Without a bundler, load CSS then the IIFE file:
 ### CDN
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@1.1.0/src/modern-alert.css">
-<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.1.0/src/modern-alert.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@1.2.0/src/modern-alert.css">
+<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.2.0/src/modern-alert.js"></script>
 ```
 
 Pin a version. `@latest` will follow new releases.
@@ -147,6 +147,7 @@ await ModernAlert.show({
   title: 'Deployed',
   text: 'v2.4.1 is live.',
   theme: 'dark',     // auto | light | dark
+  style: 'bootstrap', // default | bootstrap
   icon: true,        // circular SVG mascot
   backdrop: false    // no dim; the page still cannot be clicked
 })
@@ -156,6 +157,13 @@ Shorthand helpers take an optional third argument for any option:
 
 ```js
 ModernAlert.success('Saved', 'All set.', { theme: 'dark', timer: 2000 })
+```
+
+`style: 'bootstrap'` maps Bootstrap 5 tokens (`--bs-primary`, radius, font) onto the card. Without Bootstrap on the page it uses Bootstrap’s default palette. It does not become a Bootstrap modal.
+
+```js
+ModernAlert.style('bootstrap') // default for later calls
+await ModernAlert.confirm('Delete this project?', 'This cannot be undone.')
 ```
 
 ## Options
@@ -178,6 +186,7 @@ ModernAlert.success('Saved', 'All set.', { theme: 'dark', timer: 2000 })
 | `inputValidator` | `null` | `(value) => errorMessage`. Return a string to block confirm |
 | `inputAttributes` | `null` | Native field attrs: `min` `max` `step` `autocomplete`, or `type: 'date'` |
 | `theme` | `'auto'` | Follows `prefers-color-scheme`, or `'light'` / `'dark'` |
+| `style` | `'default'` | `'bootstrap'` uses Bootstrap 5 colors and radius |
 | `icon` | `false` | `true` shows the animated 72px type icon. Forced on for `loading` |
 | `backdrop` | `true` | `false` removes the dim and blur, not the click shield |
 | `timer` | `0` | Auto-dismiss after N milliseconds. Ignored for `loading` |
@@ -215,6 +224,7 @@ ModernAlert.close()     // dismiss: 'close'
 | `confirm(title, text, options?)` | Two actions |
 | `loading(title, text?)` | Spinner, no buttons |
 | `close()` | Dismiss the open dialog |
+| `style(name?)` | Get or set the default `style` |
 | `isVisible()` | Whether a dialog is on screen |
 
 ## License

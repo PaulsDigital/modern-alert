@@ -470,3 +470,112 @@ body.ma-lock {
     opacity: 1;
   }
 }
+
+.ma-overlay[data-ma-style="bootstrap"] {
+  --ma-font: var(--bs-body-font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
+  --ma-radius: var(--bs-border-radius-lg, 0.5rem);
+  --ma-z: var(--bs-modal-zindex, 1055);
+  --ma-overlay: rgba(0, 0, 0, 0.5);
+  font-family: var(--ma-font);
+}
+
+.ma-overlay[data-ma-style="bootstrap"] .ma-dialog {
+  padding: 1.25rem 1.25rem 1rem;
+  box-shadow: var(--bs-box-shadow-lg, 0 1rem 3rem rgba(0, 0, 0, 0.175));
+}
+
+.ma-overlay[data-ma-style="bootstrap"] .ma-field,
+.ma-overlay[data-ma-style="bootstrap"] .ma-select,
+.ma-overlay[data-ma-style="bootstrap"] .ma-textarea,
+.ma-overlay[data-ma-style="bootstrap"] .ma-btn {
+  border-radius: var(--bs-border-radius, 0.375rem);
+}
+
+.ma-overlay[data-ma-style="bootstrap"] .ma-btn {
+  height: 38px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.ma-overlay[data-ma-style="bootstrap"] .ma-btn--solid {
+  color: #fff;
+}
+
+.ma-overlay[data-ma-style="bootstrap"][data-ma-theme="light"] {
+  --ma-card: var(--bs-body-bg, #fff);
+  --ma-card-solid: var(--bs-body-bg, #fff);
+  --ma-border: var(--bs-border-color, #dee2e6);
+  --ma-text: var(--bs-body-color, #212529);
+  --ma-muted: var(--bs-secondary-color, #6c757d);
+  --ma-ghost: var(--bs-tertiary-bg, #f8f9fa);
+  --ma-ghost-hover: var(--bs-secondary-bg, #e9ecef);
+  --ma-input: var(--bs-body-bg, #fff);
+  --ma-input-border: var(--bs-border-color, #dee2e6);
+  --ma-shadow: var(--bs-box-shadow-lg, 0 1rem 3rem rgba(0, 0, 0, 0.175));
+}
+
+.ma-overlay[data-ma-style="bootstrap"][data-ma-theme="dark"] {
+  --ma-card: #212529;
+  --ma-card-solid: #212529;
+  --ma-border: rgba(255, 255, 255, 0.15);
+  --ma-text: #f8f9fa;
+  --ma-muted: #adb5bd;
+  --ma-ghost: rgba(255, 255, 255, 0.08);
+  --ma-ghost-hover: rgba(255, 255, 255, 0.14);
+  --ma-input: #2b3035;
+  --ma-input-border: rgba(255, 255, 255, 0.15);
+  --ma-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.45);
+}
+
+html[data-bs-theme="dark"] .ma-overlay[data-ma-style="bootstrap"][data-ma-theme="dark"] {
+  --ma-card: var(--bs-body-bg, #212529);
+  --ma-card-solid: var(--bs-body-bg, #212529);
+  --ma-border: var(--bs-border-color, rgba(255, 255, 255, 0.15));
+  --ma-text: var(--bs-body-color, #dee2e6);
+  --ma-muted: var(--bs-secondary-color, #adb5bd);
+  --ma-ghost: var(--bs-tertiary-bg, rgba(255, 255, 255, 0.08));
+  --ma-ghost-hover: var(--bs-secondary-bg, rgba(255, 255, 255, 0.14));
+  --ma-input: var(--bs-tertiary-bg, #2b3035);
+  --ma-input-border: var(--bs-border-color, rgba(255, 255, 255, 0.15));
+}
+
+.ma-overlay[data-ma-style="bootstrap"][data-ma-type="success"] {
+  --ma-accent: var(--bs-success, #198754);
+  --ma-accent-soft: color-mix(in srgb, var(--bs-success, #198754) 16%, transparent);
+  --ma-focus: color-mix(in srgb, var(--bs-success, #198754) 40%, transparent);
+}
+
+.ma-overlay[data-ma-style="bootstrap"][data-ma-type="error"] {
+  --ma-accent: var(--bs-danger, #dc3545);
+  --ma-accent-soft: color-mix(in srgb, var(--bs-danger, #dc3545) 16%, transparent);
+  --ma-focus: color-mix(in srgb, var(--bs-danger, #dc3545) 40%, transparent);
+}
+
+.ma-overlay[data-ma-style="bootstrap"][data-ma-type="warning"] {
+  --ma-accent: var(--bs-warning, #ffc107);
+  --ma-accent-soft: color-mix(in srgb, var(--bs-warning, #ffc107) 16%, transparent);
+  --ma-focus: color-mix(in srgb, var(--bs-warning, #ffc107) 40%, transparent);
+}
+
+.ma-overlay[data-ma-style="bootstrap"][data-ma-type="info"],
+.ma-overlay[data-ma-style="bootstrap"][data-ma-type="loading"] {
+  --ma-accent: var(--bs-info, #0dcaf0);
+  --ma-accent-soft: color-mix(in srgb, var(--bs-info, #0dcaf0) 16%, transparent);
+  --ma-focus: color-mix(in srgb, var(--bs-info, #0dcaf0) 40%, transparent);
+}
+
+.ma-overlay[data-ma-style="bootstrap"][data-ma-type="question"] {
+  --ma-accent: var(--bs-primary, #0d6efd);
+  --ma-accent-soft: color-mix(in srgb, var(--bs-primary, #0d6efd) 16%, transparent);
+  --ma-focus: color-mix(in srgb, var(--bs-primary, #0d6efd) 40%, transparent);
+}
+
+.ma-overlay[data-ma-style="bootstrap"][data-ma-type="confirm"] {
+  --ma-accent: var(--bs-info, #0dcaf0);
+  --ma-accent-soft: color-mix(in srgb, var(--bs-info, #0dcaf0) 16%, transparent);
+  --ma-focus: color-mix(in srgb, var(--bs-info, #0dcaf0) 40%, transparent);
+}
+
+.ma-overlay[data-ma-style="bootstrap"][data-ma-type="warning"] .ma-btn--solid {
+  color: #212529;
+}

@@ -9,6 +9,8 @@ export type DialogType =
 
 export type Theme = 'auto' | 'light' | 'dark'
 
+export type Style = 'default' | 'bootstrap'
+
 export type InputType =
   | 'text'
   | 'email'
@@ -79,6 +81,7 @@ export interface Options {
   inputValidator?: ((value: string) => string | false | void | null) | null
   inputAttributes?: InputAttributes | null
   theme?: Theme
+  style?: Style
   icon?: boolean
   backdrop?: boolean
 }
@@ -100,6 +103,7 @@ export interface ModernAlertAPI {
   show(options?: Options): Promise<Result>
   show(title: string, text?: string, type?: DialogType): Promise<Result>
   close(): Promise<Result | void>
+  style(name?: Style | string): Style
   isVisible(): boolean
   loading(title?: string, text?: string): Promise<Result>
   success: Helper
