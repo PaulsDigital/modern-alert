@@ -61,6 +61,21 @@ export interface InputAttributes {
   [name: string]: string | number | boolean | undefined
 }
 
+export interface CustomClass {
+  overlay?: string
+  container?: string
+  dialog?: string
+  popup?: string
+  icon?: string
+  title?: string
+  html?: string
+  text?: string
+  input?: string
+  actions?: string
+  confirm?: string
+  cancel?: string
+}
+
 export interface Options {
   type?: DialogType
   title?: string
@@ -82,6 +97,7 @@ export interface Options {
   inputAttributes?: InputAttributes | null
   theme?: Theme
   style?: Style
+  customClass?: string | CustomClass | null
   icon?: boolean
   backdrop?: boolean
 }
@@ -104,6 +120,8 @@ export interface ModernAlertAPI {
   show(title: string, text?: string, type?: DialogType): Promise<Result>
   close(): Promise<Result | void>
   style(name?: Style | string): Style
+  setDefaults(options?: Partial<Options>): Options
+  getDefaults(): Options
   isVisible(): boolean
   loading(title?: string, text?: string): Promise<Result>
   success: Helper

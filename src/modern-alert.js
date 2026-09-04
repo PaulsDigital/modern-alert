@@ -65,13 +65,14 @@
     inputAttributes: null,
     theme: 'auto',
     style: 'default',
+    customClass: null,
     icon: false,
     backdrop: true
   };
 
   const STYLE_TYPES = { default: 1, bootstrap: 1 };
   const ICON_TYPES = { success: 1, error: 1, warning: 1, info: 1, question: 1, confirm: 1 };
-  let preferredStyle = 'default';
+  const userDefaults = {};
   const INPUT_TYPES = {
     text: 1,
     email: 1,
@@ -158,21 +159,34 @@
     return options;
   }
 
+  function hasValue(obj, key) {
+    return obj && Object.prototype.hasOwnProperty.call(obj, key) && obj[key] != null;
+  }
+
+  function pick(raw, key) {
+    if (hasValue(raw, key)) return raw[key];
+    if (hasValue(userDefaults, key)) return userDefaults[key];
+    return defaults[key];
+  }
+
   function normalize(raw) {
+    raw = raw || {};
     const options = {};
     for (const key in defaults) {
       if (Object.prototype.hasOwnProperty.call(defaults, key)) {
-        options[key] = raw[key] != null ? raw[key] : defaults[key];
+        options[key] = pick(raw, key);
       }
     }
 
-    if (raw.type === 'confirm') {
+    if (raw.type === 'confirm' || options.type === 'confirm') {
       options.type = 'confirm';
-      options.showCancel = raw.showCancel != null ? raw.showCancel : true;
-      options.cancelText = raw.cancelText || 'Cancel';
+      options.showCancel = hasValue(raw, 'showCancel')
+        ? raw.showCancel
+        : (hasValue(userDefaults, 'showCancel') ? userDefaults.showCancel : true);
+      if (!options.cancelText) options.cancelText = 'Cancel';
     }
 
-    if (options.cancelText && raw.showCancel == null && raw.type !== 'loading') {
+    if (raw.cancelText && raw.showCancel == null && raw.type !== 'loading' && options.type !== 'loading') {
       options.showCancel = true;
     }
 
@@ -181,8 +195,12 @@
       options.showConfirm = false;
       options.showCancel = false;
       options.icon = true;
-      options.allowOutsideClick = raw.allowOutsideClick != null ? raw.allowOutsideClick : false;
-      options.allowEscapeKey = raw.allowEscapeKey != null ? raw.allowEscapeKey : false;
+      options.allowOutsideClick = hasValue(raw, 'allowOutsideClick')
+        ? raw.allowOutsideClick
+        : (hasValue(userDefaults, 'allowOutsideClick') ? userDefaults.allowOutsideClick : false);
+      options.allowEscapeKey = hasValue(raw, 'allowEscapeKey')
+        ? raw.allowEscapeKey
+        : (hasValue(userDefaults, 'allowEscapeKey') ? userDefaults.allowEscapeKey : false);
     }
 
     if (options.input && !INPUT_TYPES[options.input]) {
@@ -193,7 +211,6 @@
       options.timer = Number(options.timer) || 0;
     }
 
-    if (raw.style == null) options.style = preferredStyle;
     if (!STYLE_TYPES[options.style]) options.style = 'default';
 
     return options;
@@ -232,6 +249,7 @@
     overlay.dataset.maTheme = resolveTheme(options.theme);
     overlay.dataset.maStyle = options.style === 'bootstrap' ? 'bootstrap' : 'default';
     overlay.classList.toggle('ma-overlay--clear', !options.backdrop);
+    applyCustomClass(overlay, options.customClass, 'overlay', 'container');
     if (options.type === 'loading') overlay.setAttribute('aria-busy', 'true');
     else overlay.removeAttribute('aria-busy');
 
@@ -274,6 +292,7 @@
     if (options.text || options.html) dialog.setAttribute('aria-describedby', textId);
 
     if (!options.icon) dialog.classList.add('ma-dialog--plain');
+    applyCustomClass(dialog, options.customClass, 'dialog', 'popup');
     if (options.icon) dialog.appendChild(buildIcon(options));
 
     if (options.title) {
@@ -281,6 +300,7 @@
       title.className = 'ma-title';
       title.id = titleId;
       title.textContent = options.title;
+      applyCustomClass(title, options.customClass, 'title');
       dialog.appendChild(title);
     }
 
@@ -290,6 +310,7 @@
       body.id = textId;
       if (options.html) body.innerHTML = sanitizeHtml(options.html);
       else body.textContent = options.text;
+      applyCustomClass(body, options.customClass, 'html', 'text');
       dialog.appendChild(body);
     }
 
@@ -312,6 +333,7 @@
     const wrap = document.createElement('div');
     wrap.className = 'ma-icon';
     wrap.setAttribute('aria-hidden', 'true');
+    applyCustomClass(wrap, options.customClass, 'icon');
 
     if (options.type === 'loading') {
       wrap.innerHTML =
@@ -365,7 +387,21 @@
     }
     wrap.appendChild(field);
     applyInputAttributes(field, options.inputAttributes);
+    applyCustomClass(field, options.customClass, 'input');
     return wrap;
+  }
+
+  function applyCustomClass(el, customClass, key, alias) {
+    if (!el || customClass == null || customClass === '') return;
+    let names = '';
+    if (typeof customClass === 'string') {
+      if (key === 'dialog') names = customClass;
+    } else if (typeof customClass === 'object') {
+      names = customClass[key] || (alias ? customClass[alias] : '') || '';
+    }
+    String(names).split(/\s+/).forEach(function (name) {
+      if (/^[_a-zA-Z][_a-zA-Z0-9-]*$/.test(name)) el.classList.add(name);
+    });
   }
 
   function applyInputAttributes(field, attrs) {
@@ -396,6 +432,7 @@
     if (!options.showConfirm && !options.showCancel) return null;
     const actions = document.createElement('div');
     actions.className = 'ma-actions';
+    applyCustomClass(actions, options.customClass, 'actions');
 
     if (options.showCancel) {
       const cancel = document.createElement('button');
@@ -403,6 +440,7 @@
       cancel.className = 'ma-btn ma-btn--ghost';
       cancel.dataset.maAction = 'cancel';
       cancel.textContent = options.cancelText || 'Cancel';
+      applyCustomClass(cancel, options.customClass, 'cancel');
       actions.appendChild(cancel);
     }
 
@@ -412,6 +450,7 @@
       confirmBtn.className = 'ma-btn ma-btn--solid';
       confirmBtn.dataset.maAction = 'confirm';
       confirmBtn.textContent = options.confirmText || 'OK';
+      applyCustomClass(confirmBtn, options.customClass, 'confirm');
       actions.appendChild(confirmBtn);
     }
 
@@ -710,16 +749,43 @@
     return show(options);
   }
 
+  function setDefaults(next) {
+    if (!next || typeof next !== 'object') return getDefaults();
+    const skip = { type: 1, title: 1, text: 1, html: 1 };
+    for (const key in next) {
+      if (!Object.prototype.hasOwnProperty.call(defaults, key) || skip[key]) continue;
+      if (next[key] == null) delete userDefaults[key];
+      else userDefaults[key] = next[key];
+    }
+    return getDefaults();
+  }
+
+  function getDefaults() {
+    const merged = {};
+    for (const key in defaults) {
+      if (Object.prototype.hasOwnProperty.call(defaults, key)) {
+        merged[key] = pick({}, key);
+      }
+    }
+    if (!STYLE_TYPES[merged.style]) merged.style = 'default';
+    return merged;
+  }
+
   function setStyle(name) {
-    if (name == null) return preferredStyle;
-    preferredStyle = STYLE_TYPES[name] ? name : 'default';
-    return preferredStyle;
+    if (name == null) {
+      const current = pick({}, 'style');
+      return STYLE_TYPES[current] ? current : 'default';
+    }
+    userDefaults.style = STYLE_TYPES[name] ? name : 'default';
+    return userDefaults.style;
   }
 
   const api = {
     show: show,
     close: close,
     style: setStyle,
+    setDefaults: setDefaults,
+    getDefaults: getDefaults,
     isVisible: function () {
       return Boolean(state.overlay) && !state.closing;
     },

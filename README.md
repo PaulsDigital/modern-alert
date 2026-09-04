@@ -53,8 +53,8 @@ Without a bundler, load CSS then the IIFE file:
 ### CDN
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@1.2.0/src/modern-alert.css">
-<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.2.0/src/modern-alert.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-alert@1.3.0/src/modern-alert.css">
+<script src="https://cdn.jsdelivr.net/npm/modern-alert@1.3.0/src/modern-alert.js"></script>
 ```
 
 Pin a version. `@latest` will follow new releases.
@@ -166,6 +166,37 @@ ModernAlert.style('bootstrap') // default for later calls
 await ModernAlert.confirm('Delete this project?', 'This cannot be undone.')
 ```
 
+App-wide options without repeating them:
+
+```js
+ModernAlert.setDefaults({
+  theme: 'dark',
+  style: 'bootstrap',
+  confirmText: 'OK',
+  cancelText: 'Cancel'
+})
+```
+
+A later `show({ theme: 'light' })` overrides only that call. `getDefaults()` returns the merged values. Pass `null` for a key to clear it.
+
+To style the card from your CSS, pass a class. A string goes on the dialog; an object targets parts:
+
+```js
+await ModernAlert.show({
+  title: 'Invoice',
+  customClass: 'invoice-dialog'
+})
+
+await ModernAlert.show({
+  title: 'Invoice',
+  customClass: { dialog: 'invoice-dialog', confirm: 'invoice-ok' }
+})
+```
+
+```css
+.invoice-dialog { width: 520px; }
+```
+
 ## Options
 
 | Option | Default | Meaning |
@@ -187,8 +218,9 @@ await ModernAlert.confirm('Delete this project?', 'This cannot be undone.')
 | `inputAttributes` | `null` | Native field attrs: `min` `max` `step` `autocomplete`, or `type: 'date'` |
 | `theme` | `'auto'` | Follows `prefers-color-scheme`, or `'light'` / `'dark'` |
 | `style` | `'default'` | `'bootstrap'` uses Bootstrap 5 colors and radius |
+| `customClass` | `null` | Extra class on the dialog, or `{ overlay, dialog, title, html, input, confirm, cancel, icon, actions }` |
 | `icon` | `false` | `true` shows the animated 72px type icon. Forced on for `loading` |
-| `backdrop` | `true` | `false` removes the dim and blur, not the click shield |
+| `backdrop` | `true` | `false` removes the dim and blur; the card stays opaque and still blocks the page |
 | `timer` | `0` | Auto-dismiss after N milliseconds. Ignored for `loading` |
 | `allowOutsideClick` | `true` | Click outside the card to dismiss. Off for `loading` |
 | `allowEscapeKey` | `true` | Escape to dismiss. Off for `loading` |
@@ -225,6 +257,8 @@ ModernAlert.close()     // dismiss: 'close'
 | `loading(title, text?)` | Spinner, no buttons |
 | `close()` | Dismiss the open dialog |
 | `style(name?)` | Get or set the default `style` |
+| `setDefaults(options)` | Merge app-wide option defaults |
+| `getDefaults()` | Current merged defaults |
 | `isVisible()` | Whether a dialog is on screen |
 
 ## License

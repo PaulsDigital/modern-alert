@@ -89,7 +89,8 @@
   animation: ma-overlay-out 0.18s ease both;
 }
 
-.ma-overlay--clear {
+.ma-overlay.ma-overlay--clear {
+  --ma-card: var(--ma-card-solid);
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
