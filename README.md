@@ -17,6 +17,8 @@ if (result.isConfirmed) {
 
 The default card is left-aligned, with the type color as a thin top line. Light, dark, or follow the system. The circular icon is opt-in.
 
+[Live playground](https://paulsdigital.github.io/modern-alert/)
+
 ## What you get
 
 - Dialog first, decoration second (`icon` is off by default)
